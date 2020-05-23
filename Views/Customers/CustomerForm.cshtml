@@ -1,0 +1,59 @@
+﻿@model VidlyProject.ViewModel.RandomMovieViewModel
+@{
+                /**/
+
+                ViewBag.Title = "New";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Customer </h2>
+
+@*<form action="/" method="post">
+
+    </form>*@
+
+@using (Html.BeginForm("Save", "Customers"))
+{
+
+    <div class="form-group">
+        @*validtion summary*@
+        @*to see summary of individual properties use the method in the parenthese*@
+        @Html.ValidationSummary(true, "Please Fix The following errors.")
+        @*html label*@
+        @Html.LabelFor(m => m.Customer.Name)
+        @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control", placeholder = "Enter Name" })
+        @*validation in form*@
+        @Html.ValidationMessageFor(m=>m.Customer.Name)
+    </div>
+
+    <div class="form-group">
+        @*html label*@
+        @Html.LabelFor(m => m.Customer.BirthDate)
+        @Html.TextBoxFor(m => m.Customer.BirthDate, new { @class = "form-control", placeholder = "Enter Date Of Birth" })
+        @Html.ValidationMessageFor(m=>m.Customer.BirthDate)
+    </div>
+
+   //checkBox for IsSubscribed
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsLetter) Subscribe To Newsletter?
+        </label>
+    </div>
+
+    <div class="form-group">
+        @*html label*@
+        @Html.LabelFor(m => m.Customer.MembershipTypeId)
+        @Html.DropDownListFor(m => m.Customer.MembershipTypeId, new SelectList(Model.MembershipTypes, "Id", "Name"), "Select Membership Types", new { @class = "form-control" })
+        @*validation in form*@
+        @Html.ValidationMessageFor(m=>m.Customer.MembershipTypeId)
+    </div>
+    @Html.HiddenFor(m=>m.Customer.Id)
+    //cookie
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+@*rendering jquery val for client-side validation*@
+@section scripts
+    {
+    @Scripts.Render("~/bundles/jqueryval")
+    }

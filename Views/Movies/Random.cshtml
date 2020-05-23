@@ -1,0 +1,89 @@
+﻿@*for viewData dictionary*@
+
+@*@model IEnumerable<VidlyProject.Models.Movie>*@
+@*default*@
+@model VidlyProject.ViewModel.RandomMovieViewModel
+@{
+    ViewBag.Title = "Random";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*using viewData dictionary*@
+@*this method is very fragile and not
+    advisable for use*@
+
+<h2>Movies</h2>
+@Html.ActionLink("New Movie", "New", "Movies", null, new { @class = "btn btn-primary"})
+
+@*razor view*@
+@*
+    knows how to pass syntax between html and c# code
+*@
+
+@*default*@
+<br />
+<br />
+<br />
+<table id="movies" class="table-striped table-bordered table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>Movies</th>
+            <th>Genre</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in Model.Movies)    
+        {
+            <tr>
+                <td>@Html.ActionLink( movie.Name, "Edit", "Movies", new { id = movie.Id }, null)</td>
+                <td>@movie.Genre.Name</td>
+            </tr>
+
+        }
+    </tbody>
+
+</table>
+
+@*@{
+        var className = Model.Customers.Count > 0 ? "Popular" : null;
+    }
+    <h2 class="@className">@Model.Movie.Name</h2>
+
+    @if (Model.Customers.Count == 0)
+    {
+        <text>No one has rented this movie before.</text>
+    }
+    else
+    {
+        <ul>
+            @foreach (var customer in Model.Customers)
+            {
+                <li>@customer.Name </li>
+            }
+        </ul>
+
+    }*@
+
+
+@section scripts{
+<script>
+    $(document).ready(function () {
+        $("#movies").DataTable();/*({
+            ajax: {
+                url: "/api/movies",
+                dataSrc: ""
+            },
+            columns: [
+                {
+                    data: "name",
+                    render: function (data, type, movie) {
+                        return "<a href ='/movies/edit" + movie.id + "'>" + movie.name + "</a>";
+                    },
+                },
+                {
+                    data: "name"
+                }
+            ]
+        });*/
+    });
+</script>
+    }
