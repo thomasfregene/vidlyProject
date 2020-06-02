@@ -18,6 +18,6 @@ namespace VidlyProject.ViewModel
 
         public IEnumerable<MembershipType> MembershipTypes { get; set; }
 
-        public IEnumerable<Genre> Genre { get; set; }
+        public IEnumerable<Genre> Genres { get; set; }
     }
 }

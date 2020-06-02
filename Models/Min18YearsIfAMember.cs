@@ -13,6 +13,7 @@ namespace VidlyProject.Models
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             //validation logic
+            //checks for selected membershipType
             var customer = (Customer)validationContext.ObjectInstance;
 
             //to check for selected membership type
@@ -29,10 +30,6 @@ namespace VidlyProject.Models
             return (age >= 18) 
                 ? ValidationResult.Success 
                 : new ValidationResult("Customer should be at least 18years old to go on a membership");
-
-            
-
-            
         }
     }
 }

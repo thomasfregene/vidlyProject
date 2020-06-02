@@ -65,7 +65,7 @@ namespace VidlyProject.Controllers
         {
             var viewModel = new RandomMovieViewModel()
             {
-                Genre = _context.Genres.ToList()
+                Genres = _context.Genres.ToList()
             };
             return View("MovieForm", viewModel);
         }
@@ -75,32 +75,41 @@ namespace VidlyProject.Controllers
         public ActionResult Save(Movie movie)
         {
             //implementing validation
-            if (!ModelState.IsValid)
+            try
             {
-                var viewModel = new RandomMovieViewModel
+                if (!ModelState.IsValid)
                 {
-                    Movie = movie,
-                    Genre = _context.Genres.ToList()
-                };
+                    var viewModel = new RandomMovieViewModel
+                    {
+                        Movie = movie,
+                        Genres = _context.Genres.ToList()
+                    };
 
-                return View("MovieForm", viewModel);
+                    return Content("Invalid Form");
+                    // return View("MovieForm", viewModel);
+                }
+
+                if (movie.Id == 0)
+                    _context.Movies.Add(movie);
+                else
+                {
+                    var movieInDb = _context.Movies.Single(m => m.Id == movie.Id);
+
+                    //edit
+                    movieInDb.Name = movie.Name;
+                    movieInDb.NumberInStock = movie.NumberInStock;
+                    movieInDb.GenreId = movie.GenreId;
+                    movieInDb.ReleaseDate = movie.ReleaseDate;
+                }
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "Movies");
             }
-
-            if (movie.Id == 0)
-                _context.Movies.Add(movie);
-            else
+            catch (Exception)
             {
-                var movieInDb = _context.Movies.Single(m => m.Id == movie.Id);
 
-                //edit
-                movieInDb.Name = movie.Name;
-                movieInDb.NumberInStock = movie.NumberInStock;
-                movieInDb.GenreId = movie.GenreId;
-                movieInDb.ReleaseDate = movie.ReleaseDate;
+                throw;
             }
-            _context.SaveChanges();
-
-            return RedirectToAction("Random", "Movies");
         }
 
         //Edit/Update
@@ -114,7 +123,7 @@ namespace VidlyProject.Controllers
             var viewModel = new RandomMovieViewModel
             {
                 Movie = movie,
-                Genre = _context.Genres.ToList()
+                Genres = _context.Genres.ToList()
             };
 
             return View("Edit", viewModel);
